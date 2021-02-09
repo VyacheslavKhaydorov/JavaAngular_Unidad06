@@ -1,6 +1,6 @@
 package tarea6;
 
-import java.util.Scanner;	//Captura de datos por teclado
+import java.util.Scanner;						//Captura de datos por teclado
 import java.util.concurrent.ThreadLocalRandom;	//Para generar valores aleatorios
 
 public class Ejerc09App {
@@ -20,7 +20,6 @@ public class Ejerc09App {
 		cantidadNumerosGenerados = input.nextInt();
 		numAleatorio = new int[cantidadNumerosGenerados];
 		for (int i = cantidadNumerosGenerados; i > 0; i--) {
-			
 			//Llamada a método para generar el número aleatorio
 			numAleatorio[cantidadNumerosGenerados - i] = numeroAleatorio(RANGO_MIN, RANGO_MAX);
 		}

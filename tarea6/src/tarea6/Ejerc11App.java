@@ -1,7 +1,7 @@
 package tarea6;
 
-import java.util.Arrays;	//Para reordenar los valores de un array
-import java.util.Scanner;	//Captura de datos por teclado
+import java.util.Random;						//Para reordenar los valores de un array
+import java.util.Scanner;						//Captura de datos por teclado
 import java.util.concurrent.ThreadLocalRandom;	//Para generar valores aleatorios
 
 public class Ejerc11App {
@@ -33,7 +33,10 @@ public class Ejerc11App {
 		}
 		
 		//Pasamos los números de un array a otro y los mezclamos
-		mezclarValoresDeVector(numAleatorio2);
+		int[] vectorAux = numAleatorio1.clone();	//Muy importante, si no
+													//el método modificará el
+													//vector numAleatorio1 original
+		numAleatorio2 = mezclarValoresDeVector(vectorAux);
 		
 		//Calculamos el resultado de multiplicar los valores del vector numAleatorio1 por
 		//los valores del vector numAleatorio2 por posición y los guardamos en el vector
@@ -41,10 +44,14 @@ public class Ejerc11App {
 		vectorMultiplicado = multiplicarValoresVectoresPorPosicion(numAleatorio1, numAleatorio2);
 		
 		//Salida por consola
-		System.out.println("Los " + cantidadNumerosGenerados + " valores aleatorios "
-				+ "que se han generado son:");
-		for (int i = 0; i < numAleatorio.length; i++)
-			System.out.print(numAleatorio[i] + " ");
+		System.out.println("Vector original:");
+		contenidoVector(numAleatorio1);
+		System.out.println("Vector mezclado:");
+		contenidoVector(numAleatorio2);
+		System.out.println("Multiplicamos el primer valor del primer vector por "
+				+ "el primer valor del segundo vector,\nel segundo valor del primer "
+				+ "vector por el segundo valor del segundo vector. etc.");
+		contenidoVector(vectorMultiplicado);
 		
 	}
 	
@@ -57,22 +64,41 @@ public class Ejerc11App {
 		return numeroGenerado;
 	}
 	
-	//Método para mezclar los valores de un vector y pasarlos a otro
+	//Método para mezclar los valores de un vector
 	public static int[] mezclarValoresDeVector (int vector[]) {
-		int[] vectorMezclado;
-		Arrays.sort(vector);
-		vectorMezclado = vector;
-		return vectorMezclado;
+		//Creamos un aleatorizador
+		Random aleatorizador = ThreadLocalRandom.current();
+		
+		//Usamos un bucle para aleatorizar los valores del vector pasado
+		//como parametro (Durstenfeld)
+		for (int i = vector.length - 1; i > 0; i--) {
+			int posicionEnVector = aleatorizador.nextInt(i + 1);
+			//Hacemos el intercambio de valores
+			int variableTemporal = vector[posicionEnVector];
+			vector[posicionEnVector] = vector[i];
+		    vector[i] = variableTemporal; 
+		}
+		
+		return vector;
 	}
 	
-	//
-	public static int[] multiplicarValoresVectoresPorPosicion (int vector1, int vector2) {
-		int[] vectorMultiplicado;
-		for (int i = 0) {
-			
+	//Método para multiplicar los valores de un array por los valores de otro por posición
+	public static int[] multiplicarValoresVectoresPorPosicion (int[] vector1, int[] vector2) {
+		//Variables
+		int[] vectorMultiplicado = new int[vector1.length];
+		
+		//Multiplicamos valores por posición (v1.0 por v2.0, v1.1 por v2.1, etc.)
+		for (int i = 0; i < vector1.length; i++) {
+			vectorMultiplicado[i] = vector1[i] * vector2[i];
 		}
 		
 		return vectorMultiplicado;
+	}
+	
+	//Método para mostrar el contenido de un vector
+	public static void contenidoVector (int vector[]) {
+		for (int i = 0; i < vector.length; i++)		//Bucle para mostrar posición y valor
+			System.out.println("Posición " + (i + 1) + ". " + vector[i] + " ");
 	}
 
 }
